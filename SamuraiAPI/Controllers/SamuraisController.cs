@@ -16,6 +16,7 @@ namespace SamuraiAPI.Controllers
     {
         private readonly SamuraiContext _context;
 
+        //every time an instance of this controller is used, the ConfigurationServicesMethod will setup the context for you
         public SamuraisController(SamuraiContext context)
         {
             _context = context;

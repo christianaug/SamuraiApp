@@ -28,7 +28,7 @@ namespace SamuraiAPI
 		public void ConfigureServices(IServiceCollection services)
 		{
 			services.AddControllers();
-			services.AddDbContext<SamuraiContext>(opt => opt.UseSqlServer("connection string").EnableSensitiveDataLogging());
+			services.AddDbContext<SamuraiContext>(opt => opt.UseSqlServer(Configuration.GetConnectionString("SamuraiConnex")).EnableSensitiveDataLogging());
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

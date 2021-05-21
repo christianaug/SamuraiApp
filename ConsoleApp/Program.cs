@@ -10,14 +10,14 @@ namespace ConsoleApp
 	internal class Program
 	{
 		//instance of samurai context
-		private static SamuraiContext _context = new SamuraiContext();
+		//private static SamuraiContext _context = new SamuraiContext();
 		static void Main(string[] args)
 		{
 			//calling database context method to ensure that the database has been created (DON'T USE IN REAL APPLIACTIONS) 
 			/*
 			 * reads the database context to see if it exists, if it doesnt then reads the context and finds the relationships to build the new database
 			 */
-			_context.Database.EnsureCreated();
+			//_context.Database.EnsureCreated();
 			//GetSamurais("Before Add: ");
 			//AddSamurai();
 			//RetrieveAndUpdateSamurai();
@@ -34,17 +34,17 @@ namespace ConsoleApp
 			Console.ReadKey();
 		}
 
-		private static void InsertMultipleSamurai()
-		{
-			List<string> names = new List<string>() { "Christain", "Camille", "Celine", "Ben", "Betty", "Billy" };
-			List<Samurai> samurais = new List<Samurai>();
-			foreach (var name in names)
-			{
-				samurais.Add(new Samurai { Name = name });
-			}
-			_context.Samurais.AddRange(samurais);
-			_context.SaveChanges(); //make sure to use this after making changes!
-		}
+		//private static void InsertMultipleSamurai()
+		//{
+		//	List<string> names = new List<string>() { "Christain", "Camille", "Celine", "Ben", "Betty", "Billy" };
+		//	List<Samurai> samurais = new List<Samurai>();
+		//	foreach (var name in names)
+		//	{
+		//		samurais.Add(new Samurai { Name = name });
+		//	}
+		//	_context.Samurais.AddRange(samurais);
+		//	_context.SaveChanges(); //make sure to use this after making changes!
+		//}
 
 		private static void GetSamurais(string text)
 		{
@@ -150,17 +150,17 @@ namespace ConsoleApp
 
 			//}
 
-			var quote = new Quote
-			{
-				Text = "feed me now please",
-				SamuraiId = samuraiId //this is th foreign key for the samurai
-			};
+			//var quote = new Quote
+			//{
+			//	Text = "feed me now please",
+			//	SamuraiId = samuraiId //this is th foreign key for the samurai
+			//};
 
-			using (var newContext = new SamuraiContext())
-			{
-				newContext.Quotes.Add(quote);
-				newContext.SaveChanges();
-			}
+			//using (var newContext = new SamuraiContext())
+			//{
+			//	newContext.Quotes.Add(quote);
+			//	newContext.SaveChanges();
+			//}
 
 		}
 
@@ -200,22 +200,22 @@ namespace ConsoleApp
 			_context.SaveChanges();
 		}
 
-		private static void ModifyingRelatedDataWhenNotTracked()
-		{
-			var samurai = _context.Samurais.Include(s => s.Quotes).FirstOrDefault(s => s.Id == 2);
-			var quote = samurai.Quotes[0];
-			quote.Text += " did you hear that?";
+		//private static void ModifyingRelatedDataWhenNotTracked()
+		//{
+		//	var samurai = _context.Samurais.Include(s => s.Quotes).FirstOrDefault(s => s.Id == 2);
+		//	var quote = samurai.Quotes[0];
+		//	quote.Text += " did you hear that?";
 			
-			using (var newContext = new SamuraiContext())
-			{
-				//using this method not only updates the edited quote, but also updates all other quotes that the samurai might have whcih is uneccesary processing
-				//newContext.Quotes.Update(quote);
+		//	using (var newContext = new SamuraiContext())
+		//	{
+		//		//using this method not only updates the edited quote, but also updates all other quotes that the samurai might have whcih is uneccesary processing
+		//		//newContext.Quotes.Update(quote);
 
-				//this method specifically targets to only update the modified quote
-				newContext.Entry(quote).State = EntityState.Modified;
-				newContext.SaveChanges();
-			}
-		}
+		//		//this method specifically targets to only update the modified quote
+		//		newContext.Entry(quote).State = EntityState.Modified;
+		//		newContext.SaveChanges();
+		//	}
+		//}
 
 		private static void JoinBattleAndSamurai()
 		{
@@ -264,52 +264,52 @@ namespace ConsoleApp
 				.FirstOrDefault();
 		}
 
-		private static void AddNewSamuraiWithHorse()
-		{
-			var samurai = new Samurai
-			{
-				Name = "Jina Ujichiki",
-				Horse = new Horse
-				{
-					Name = "Silver"
-				}
-			};
+		//private static void AddNewSamuraiWithHorse()
+		//{
+		//	var samurai = new Samurai
+		//	{
+		//		Name = "Jina Ujichiki",
+		//		Horse = new Horse
+		//		{
+		//			Name = "Silver"
+		//		}
+		//	};
 
-			_context.Samurais.Add(samurai);
-			_context.SaveChanges();
-		}
+		//	_context.Samurais.Add(samurai);
+		//	_context.SaveChanges();
+		//}
 
-		private static void AddNewHorseToSamuraiUsingId()
-		{
-			var horse = new Horse
-			{
-				Name = "Scout",
-				SamuraiId = 2
-			};
-			_context.Add(horse);
-			_context.SaveChanges();
-		}
+		//private static void AddNewHorseToSamuraiUsingId()
+		//{
+		//	var horse = new Horse
+		//	{
+		//		Name = "Scout",
+		//		SamuraiId = 2
+		//	};
+		//	_context.Add(horse);
+		//	_context.SaveChanges();
+		//}
 
-		private static void AddNewHorseToSamuraiObject()
-		{
-			var samurai = _context.Samurais.Find(10);
-			samurai.Horse = new Horse { Name = "Black Beauty" };
-			_context.SaveChanges();
-		}
+		//private static void AddNewHorseToSamuraiObject()
+		//{
+		//	var samurai = _context.Samurais.Find(10);
+		//	samurai.Horse = new Horse { Name = "Black Beauty" };
+		//	_context.SaveChanges();
+		//}
 
-		private static void AddNewHorseToDisconnectedSamuraiObject()
-		{
-			var samurai = _context.Samurais.AsNoTracking().FirstOrDefault(s => s.Id == 5);
-			samurai.Horse = new Horse
-			{
-				Name = "Mr. Ed"
-			};
+		//private static void AddNewHorseToDisconnectedSamuraiObject()
+		//{
+		//	var samurai = _context.Samurais.AsNoTracking().FirstOrDefault(s => s.Id == 5);
+		//	samurai.Horse = new Horse
+		//	{
+		//		Name = "Mr. Ed"
+		//	};
 
-			using (var newContext = new SamuraiContext())
-			{
-				newContext.Attach(samurai);
-				newContext.SaveChanges();
-			}
-		}
+		//	using (var newContext = new SamuraiContext())
+		//	{
+		//		newContext.Attach(samurai);
+		//		newContext.SaveChanges();
+		//	}
+		//}
 	}
 }
