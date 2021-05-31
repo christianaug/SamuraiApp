@@ -28,7 +28,8 @@ namespace SamuraiAPI
 		public void ConfigureServices(IServiceCollection services)
 		{
 			services.AddControllers();
-			services.AddDbContext<SamuraiContext>(opt => opt.UseSqlServer(Configuration.GetConnectionString("SamuraiConnex")).EnableSensitiveDataLogging());
+			//Configuration.GetConnectionString("SamuraiConnex")
+			services.AddDbContext<SamuraiContext>(opt => opt.UseSqlServer("Data Source = (localdb)\\MSSQLLocalDB; Initial Catalog = SamuraiAppData").EnableSensitiveDataLogging());
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -39,7 +40,7 @@ namespace SamuraiAPI
 				app.UseDeveloperExceptionPage();
 			}
 
-			app.UseHttpsRedirection();
+			//app.UseHttpsRedirection();
 
 			app.UseRouting();
 

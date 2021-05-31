@@ -5,7 +5,6 @@ namespace SamuraiApp.Data
 {
 	public class SamuraiContext : DbContext
 	{
-
 		public DbSet<Samurai> Samurais { get; set; }
 		public DbSet<Quote> Quotes { get; set; }
 		public DbSet<Clan> Clans { get; set; }
@@ -26,6 +25,12 @@ namespace SamuraiApp.Data
 			modelBuilder.Entity<SamuraiBattle>().HasKey(s => new { s.SamuraiId, s.BattleId });
 			//tells the model builder that the Horse entity will map to a table called Horses
 			modelBuilder.Entity<Horse>().ToTable("Horses");
+			modelBuilder.Entity<SecretIdentity>().ToTable("SecretIdentities");
+			//modelBuilder.Entity<SecretIdentity>().ToTable("SecretIdentities");
+			//samurai "Has One" Secre Identity Property and, that property has a Samurai Property that is required
+			//modelBuilder.Entity<Samurai>()
+			//	.HasOne(s => s.SecretIdentity)
+			//	.WithOne(i => i.Samurai).IsRequired();
 		}
 	}
 }

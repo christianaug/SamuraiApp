@@ -107,5 +107,24 @@ namespace SamuraiAPI.Controllers
         {
             return _context.Samurais.Any(e => e.Id == id);
         }
+
+        //TEST METHOD CALLS ##################################################
+
+        [HttpGet("test")]
+        public ActionResult TestCode()
+		{
+            AddSecretIdentityUsingSamurai();
+            return Ok();
+		}
+
+        private void AddSecretIdentityUsingSamurai()
+        {
+            var samurai = new Samurai { Name = "Juniper" };
+            samurai.SecretIdentity = new SecretIdentity { RealName = "Julie" };
+            _context.Samurais.Add(samurai);
+            _context.SaveChanges();
+        }
+
+
     }
 }

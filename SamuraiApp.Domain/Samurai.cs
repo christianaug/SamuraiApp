@@ -12,7 +12,8 @@ namespace SamuraiApp.Domain
 		public Clan Clan { get; set; }
 		public List<SamuraiBattle> SamuraiBattles { get; set; }
 		//this is a one-to-one relationship with the horse model
-		public Horse Horse { get; set; } 
+		public Horse Horse { get; set; }
+		public SecretIdentity SecretIdentity { get; set; }
 
 		public Samurai()
 		{
