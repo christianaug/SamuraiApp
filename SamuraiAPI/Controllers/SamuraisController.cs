@@ -113,11 +113,11 @@ namespace SamuraiAPI.Controllers
         [HttpGet("test")]
         public ActionResult TestCode()
 		{
-            AddSecretIdentityUsingSamurai();
+            GetSamuraisCreatedPastWeek();
             return Ok();
 		}
 
-        private void AddSecretIdentityUsingSamurai()
+        private void AddNewSamuraiWithSecretIdentity()
         {
             var samurai = new Samurai { Name = "Juniper" };
             samurai.SecretIdentity = new SecretIdentity { RealName = "Julie" };
@@ -125,6 +125,41 @@ namespace SamuraiAPI.Controllers
             _context.SaveChanges();
         }
 
+        private void AddSecretIdentityUsingSamurai()
+		{
+            var identity = new SecretIdentity { SamuraiId = 1, };
+            _context.Add(identity);
+            _context.SaveChanges();
+		}
+
+        private void AddSecretIdentityToExistingSamurai()
+		{
+            var samurai = _context.Samurais.Include(s => s.SecretIdentity).FirstOrDefault(s => s.Id == 37);
+			Console.WriteLine(samurai.Name);
+            samurai.SecretIdentity = new SecretIdentity { RealName = "John Shmeat" };
+            _context.SaveChanges();
+		}
+
+        private void CreateNewSamurai()
+		{
+            var samurai = new Samurai { Name = "Ronin" };
+            _context.Samurais.Add(samurai);
+            var timestamp = DateTime.Now;
+            _context.Entry(samurai).Property("Created").CurrentValue = timestamp;
+            _context.Entry(samurai).Property("LastModified").CurrentValue = timestamp;
+            _context.SaveChanges();
+        }
+
+        private void GetSamuraisCreatedPastWeek()
+		{
+            var oneWeekAgo = DateTime.Now.AddDays(-7);
+            var newSamurais = _context.Samurais.Where(s => EF.Property<DateTime>(s, "Created") >= oneWeekAgo).Select(s => new { s.Id, s.Name, Created=EF.Property<DateTime>(s, "Created") }).ToList();
+
+			foreach (var s in newSamurais)
+			{
+                Console.WriteLine($"{s.Id} - {s.Name} - {s.Created}");
+			};
+		}
 
     }
 }
